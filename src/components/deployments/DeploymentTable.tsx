@@ -10,6 +10,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import {
+  Alert,
   Box,
   Button,
   Chip,
@@ -18,9 +19,11 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Grid2,
   IconButton,
   Menu,
   MenuItem,
+  Stack,
   TableSortLabel,
   Tooltip,
   Typography,
@@ -32,6 +35,7 @@ import ConfigureDeployment from "./ConfigureDeployment";
 import SnackBar from "../common/SnackBar";
 import CachedIcon from "@mui/icons-material/Cached";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import dayjs from "dayjs";
 
 const options = ["Promote", "Stage", "Trigger", "Schedule"];
 
@@ -353,6 +357,26 @@ export default function DeploymentTable({ dataRefreshInd, searchText }: any) {
               </TableRow>
             </TableHead>
 
+            {rows.length === 0 && (
+              <TableBody>
+                <TableRow>
+                  <TableCell colSpan={12}>
+                    <Stack sx={{ width: "100%" }} spacing={2}>
+                      <Grid2 container>
+                        <Grid2 size={4}></Grid2>
+                        <Grid2 size={4}>
+                          <Alert severity="info">
+                            No Deployments. Try adidng one !!
+                          </Alert>
+                        </Grid2>
+                        <Grid2 size={4}></Grid2>
+                      </Grid2>
+                    </Stack>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            )}
+
             <TableBody>
               {rows
                 .sort(getComparator(order, orderBy))
@@ -397,7 +421,7 @@ export default function DeploymentTable({ dataRefreshInd, searchText }: any) {
                       <TableCell align="center">{row.algorithm}</TableCell>
                       <TableCell align="center">
                         <Chip
-                          label={row.expDate}
+                          label={dayjs(row.expDate).toISOString()}
                           color="secondary"
                           style={{ color: "#F3BC00" }}
                         />
@@ -484,15 +508,18 @@ export default function DeploymentTable({ dataRefreshInd, searchText }: any) {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
+
+        {rows.length > 2 && (
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        )}
       </Paper>
     </Box>
   );

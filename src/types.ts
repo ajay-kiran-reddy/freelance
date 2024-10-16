@@ -17,7 +17,7 @@ interface SnackBarProps {
 const initFormState = {
   algorithm: "",
   authority: "",
-  expDate: "",
+  expDate: new Date().toString(),
   name: "",
   id: 0,
 };
