@@ -1,0 +1,5 @@
+.appBackground {
+  background: linear-gradient(180deg, #e3de8b 0%, #f0f2fa 100%);
+  height: 100vh;
+  padding: 0.5rem;
+}
